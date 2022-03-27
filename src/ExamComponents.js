@@ -1,5 +1,6 @@
 import {Col, Table} from 'react-bootstrap';
 import {iconDelete, iconEdit} from './icons';
+import {useState} from 'react';
 
 
 function Title(props){
@@ -11,6 +12,18 @@ function Title(props){
 }
 
 function ExamTable(props){
+
+    const [exams, setExams] = useState(props.exams);
+
+    //props.exams is only readable, exams is modifiable
+
+    const deleteExam = (code) => {
+        setExams((oldExams) => {
+            oldExams.filter(exam => exam.coursecode !== code);
+            //recreating a new array because i have to operate with state variables
+        });
+    }
+
     return (
     <Table striped bordered variant='dark'>
     <thead>
@@ -22,30 +35,9 @@ function ExamTable(props){
       </tr>
     </thead>
     <tbody>
-        {props.exams.map((exam) => <ExamRow key={exam.coursecode} exam={exam} 
-        examName={props.courses.filter((c) => c.coursecode === exam.coursecode)[0].name}/>)}
-        {/* <ExamRow/>
-        <ExamRow/>
-        <ExamRow/>
-        <ExamRow/> */}
-      {/* <tr>
-        <td>Data Science and Database Technology</td>
-        <td>29</td>
-        <td>03/06/2021</td>
-        <td>{iconEdit}{iconDelete}</td>
-      </tr>
-      <tr>
-        <td>Software Engineering</td>
-        <td>18</td>
-        <td>24/05/2021</td>
-        <td>{iconEdit}{iconDelete}</td>
-      </tr>
-      <tr>
-        <td>Web Application I</td>
-        <td>24</td>
-        <td>21/06/2021</td>
-        <td>{iconEdit}{iconDelete}</td>
-      </tr> */}
+        {exams.map(((exam) => <ExamRow key={exam.coursecode} exam={exam} 
+        examName={props.courses.filter((c) => c.coursecode === exam.coursecode)[0].name} 
+        deleteExam={deleteExam} />))}
     </tbody>
   </Table>
     );
@@ -55,11 +47,7 @@ function ExamRow(props){
     return(
         <tr>
             <ExamInfo {...props}/> {/* to pass all the propriety to a children*/}
-            <ExamControls/>
-            {/* <td>Information system security</td>
-            <td>28</td>
-            <td>01/03/2021</td>
-            <td>{iconEdit}{iconDelete}</td> */}
+            <ExamControls exam={props.exam} deleteExam={props.deleteExam}/>
         </tr>
     );
 }
@@ -77,7 +65,8 @@ function ExamInfo(props){
 }
 
 function ExamControls(props){
-    return(<td>{iconEdit}{iconDelete}</td>);
+    return(<td>{iconEdit}
+    <span onClick={() => props.deleteExam(props.exam.coursecode)}>{iconDelete}</span></td>);
 }
 
 export {Title, ExamTable};
