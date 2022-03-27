@@ -23,8 +23,7 @@ function ExamTable(props){
     </thead>
     <tbody>
         {props.exams.map((exam) => <ExamRow key={exam.coursecode} exam={exam} 
-        examName={props.courses.filter((c) => {c.coursecode === exam.coursecode})[0].name}/>)}
-        
+        examName={props.courses.filter((c) => c.coursecode === exam.coursecode)[0].name}/>)}
         {/* <ExamRow/>
         <ExamRow/>
         <ExamRow/>
