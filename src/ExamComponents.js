@@ -22,10 +22,13 @@ function ExamTable(props){
       </tr>
     </thead>
     <tbody>
+        {props.exams.map((exam) => <ExamRow key={exam.coursecode} exam={exam} 
+        examName={props.courses.filter((c) => {c.coursecode === exam.coursecode})[0].name}/>)}
+        
+        {/* <ExamRow/>
         <ExamRow/>
         <ExamRow/>
-        <ExamRow/>
-        <ExamRow/>
+        <ExamRow/> */}
       {/* <tr>
         <td>Data Science and Database Technology</td>
         <td>29</td>
@@ -52,7 +55,7 @@ function ExamTable(props){
 function ExamRow(props){
     return(
         <tr>
-            <ExamInfo/>
+            <ExamInfo {...props}/> {/* to pass all the propriety to a children*/}
             <ExamControls/>
             {/* <td>Information system security</td>
             <td>28</td>
@@ -65,10 +68,11 @@ function ExamRow(props){
 //i break the ExamRow in two other components
 
 function ExamInfo(props){
-    return(<>
-    <td>Information system security</td>
-    <td>28</td>
-    <td>01/03/2021</td>
+    return(
+    <>
+        <td>{props.examName}</td>
+        <td>{props.exam.score}</td>
+        <td>{props.exam.date.format('DD MMM YYYY')}</td>
      </>
     );
 }
