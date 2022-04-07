@@ -4,6 +4,10 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import {ExamTable, Title} from './ExamComponents';
 import dayjs from 'dayjs';
+import { useState } from 'react';
+import { Button, Col } from 'react-bootstrap';
+import { EditMode, PrivacyMode } from './createContext';
+import {BrowserRouter as Router} from 'react-router-dom';
 
 const fakeExams = [
   { coursecode: '01TYMOV', score: 28, date: dayjs('2021-03-01') },
@@ -25,15 +29,28 @@ const fakeCourses = [
 ];
 
 function App() {
+  const [privacy, setPrivacy] = useState();
+  const [editable, setEditable] = useState();
+
   return (
-    <Container className='App'>
-      <Row>
-        <Title/>
-      </Row>
-      <Row>
-        <ExamTable courses={fakeCourses} exams={fakeExams}/>
-      </Row>
-    </Container>
+    <Router>
+      <Container className='App'>
+        <Row>
+          <Title/>
+          {/* <Col>
+            <Button variant='secondary' onClick={() => setPrivacy(p => !p)}>{privacy ? 'View' : 'Hide'}</Button>
+            <Button variant='secondary' onClick={() => setEditable(p => !p)}>{editable ? 'Read' : 'Edit'}</Button>
+          </Col> */}
+        </Row>
+        <Row>
+          {/* <PrivacyMode.Provider value={privacy}>
+            <EditMode.Provider value={editable}> */}
+              <ExamTable courses={fakeCourses} exams={fakeExams}/>
+            {/* </EditMode.Provider>
+          </PrivacyMode.Provider> */}
+        </Row>
+      </Container>
+    </Router>
   );
 }
 
